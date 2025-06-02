@@ -50,10 +50,9 @@ export class QuestionController {
   @ApiOperation({ summary: '게시글 생성' })
   @ApiBearerAuth()
   async createQuestion(@Request() req, @Body() dto: CreateQuestionDto) {
-
-    if (req.user.role !== 'mentee') {
-    throw new BadRequestException('멘티만 질문 작성이 가능합니다.');
-  }
+    if (req.user.role !== '멘티') {
+      throw new BadRequestException('멘티만 질문 작성이 가능합니다.');
+    }
     const question = await this.questionService.createQuestion(
       req.user.id,
       dto,
@@ -82,7 +81,7 @@ export class QuestionController {
   }
 }
 
-    // 게시글 수정
+// 게시글 수정
 //   @UseGuards(JwtAuthGuard)
 //   @Patch('question/:id')
 //   @ApiOperation({ summary: '게시글 수정' })
@@ -99,11 +98,10 @@ export class QuestionController {
 //     return new QuestionEntity(question || {});
 //   }
 
-  // 게시글 삭제
+// 게시글 삭제
 //   @UseGuards(JwtAuthGuard)
 //   @Delete('question/:id')
 //   @ApiOperation({ summary: '게시글 삭제' })
 //   async deleteQuestion(@Request() req, @Param('id') id: string) {
 //     return this.questionService.deleteQuestion(Number(id), req.user.id);
 //   }
-

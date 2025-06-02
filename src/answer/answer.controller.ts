@@ -1,4 +1,12 @@
-import { Controller, Post, Get, Body, Param, Request, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  Request,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateAnswerDto } from './dto/create-answer.dto';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { AnswerService } from './answer.service';
@@ -21,12 +29,15 @@ export class AnswerController {
     @Param('id') questionId: string,
     @Body() dto: CreateAnswerDto,
   ) {
-    if (req.user.role !== 'mentor') {
-    throw new BadRequestException('멘토만 답변 작성이 가능합니다.');
+    if (req.user.role !== '멘토') {
+      throw new BadRequestException('멘토만 답변 작성이 가능합니다.');
     }
-    return this.answerService.createAnswer(req.user.id, Number(questionId), dto);
+    return this.answerService.createAnswer(
+      req.user.id,
+      Number(questionId),
+      dto,
+    );
   }
-
 
   // 게시글별 답변 조회
   @UseGuards(JwtAuthGuard)
@@ -40,5 +51,4 @@ export class AnswerController {
     }
     return this.answerService.getAnswersByQuestion(questionIdNum);
   }
-
 }
