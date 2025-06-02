@@ -1,9 +1,8 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { LoginUserDto } from '../users/dto/login-user.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { LoginUserDto } from 'src/users/dto/login-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-
 
 @Controller('auth')
 @ApiTags('auth')
@@ -19,6 +18,6 @@ export class AuthController {
   @Post('login')
   @ApiOperation({ summary: '로그인' })
   async login(@Body() loginUserDto: LoginUserDto) {
-    return this.authService.login(loginUserDto); //토큰 발급됨.
+    return this.authService.login(loginUserDto);
   }
 }

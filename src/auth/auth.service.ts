@@ -13,7 +13,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService, // JWT 토큰 생성
+    private jwtService: JwtService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -25,7 +25,6 @@ export class AuthService {
     return null;
   }
 
-  //로그인
   async login(loginUserDto: LoginUserDto) {
     const user = await this.validateUser(
       loginUserDto.email,
@@ -34,7 +33,7 @@ export class AuthService {
     if (!user) {
       throw new NotFoundException('존재하지 않는 유저입니다.');
     }
-    const payload = {  
+    const payload = {
       email: user.email,
       sub: user.id,
       name: user.name,
@@ -42,10 +41,11 @@ export class AuthService {
     };
     return {
       access_token: this.jwtService.sign(payload),
+      role: user.role,
+      name: user.name,
     };
   }
 
-  //회원가입
   async signup(data: CreateUserDto) {
     const exists = await this.usersService.findByEmail(data.email);
     if (exists) {

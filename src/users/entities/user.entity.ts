@@ -7,10 +7,10 @@ export class UserEntity {
   name: string;
   @Exclude()
   password: string;
-  @Exclude()
   createdAt?: Date;
   @Exclude()
   updatedAt?: Date;
+  role: string;
 
   constructor(partial: Partial<UserEntity>) {
     Object.assign(this, partial);
