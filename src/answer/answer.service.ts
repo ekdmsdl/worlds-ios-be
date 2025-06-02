@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateAnswerDto } from './dto/create-answer.dto';
-
-
+import { count } from 'console';
 
 @Injectable()
 export class AnswerService {
@@ -28,19 +27,38 @@ export class AnswerService {
     });
   }
 
-//   // 답변 수정
-//   async updateAnswer(id: number, userId: number, dto: UpdateAnswerDto) {
-//     const answer = await this.prisma.answer.findUnique({ where: { id } });
-//     if (!answer || answer.userId !== userId)
-//       throw new Error('권한 없음 또는 답변 없음');
-//     return this.prisma.answer.update({ where: { id }, data: dto });
-//   }
+  // 멘토별 답변 수 조회
+  async getMentorRankings() {
+    const mentors = await this.prisma.user.findMany({
+      where: { role: '멘토' },
+      select: {
+        id: true,
+        name: true,
+        answer: true,
+      },
+    });
 
-//   // 답변 삭제
-//   async deleteAnswer(id: number, userId: number) {
-//     const answer = await this.prisma.answer.findUnique({ where: { id } });
-//     if (!answer || answer.userId !== userId)
-//       throw new Error('권한 없음 또는 답변 없음');
-//     return this.prisma.answer.delete({ where: { id } });
-//   }
+    return mentors
+      .map((mentor) => ({
+        name: mentor.name,
+        count: mentor.answer.length,
+      }))
+      .sort((a, b) => b.count - a.count);
+  }
+
+  //   // 답변 수정
+  //   async updateAnswer(id: number, userId: number, dto: UpdateAnswerDto) {
+  //     const answer = await this.prisma.answer.findUnique({ where: { id } });
+  //     if (!answer || answer.userId !== userId)
+  //       throw new Error('권한 없음 또는 답변 없음');
+  //     return this.prisma.answer.update({ where: { id }, data: dto });
+  //   }
+
+  //   // 답변 삭제
+  //   async deleteAnswer(id: number, userId: number) {
+  //     const answer = await this.prisma.answer.findUnique({ where: { id } });
+  //     if (!answer || answer.userId !== userId)
+  //       throw new Error('권한 없음 또는 답변 없음');
+  //     return this.prisma.answer.delete({ where: { id } });
+  //   }
 }

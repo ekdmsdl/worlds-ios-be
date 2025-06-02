@@ -51,4 +51,12 @@ export class AnswerController {
     }
     return this.answerService.getAnswersByQuestion(questionIdNum);
   }
+
+  // 멘토별 답변 수 조회
+  @UseGuards(JwtAuthGuard)
+  @Get('/ranking/mentors')
+  @ApiOperation({ summary: '멘토별 답변 수 랭킹' })
+  async getMentorRankings() {
+    return this.answerService.getMentorRankings();
+  }
 }
