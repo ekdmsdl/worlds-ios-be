@@ -7,7 +7,7 @@ export class CreateUserDto {
   email: string;
 
   @IsNotEmpty()
-  @ApiProperty({ description: '닉네임', example: 'test' })
+  @ApiProperty({ description: '이름', example: 'test' })
   name: string;
 
   @MinLength(6)
