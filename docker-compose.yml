@@ -19,10 +19,10 @@ services:
     expose:
       - '3000'
     environment:
-      - DATABASE_URL="postgresql://myuser:mypassword@localhost:5432/worldstudy?schema=public"
-      - JWT_SECRET = "secret-jwt-development"
-      - AZURE_STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=worldstudy10;AccountKey=AB0QUUtm4W13Bq5gXpc6ZnmTLBbooD+EMh77VrIUti/u6aD44M1HoP56v9nwkNO/TojdR0twQIK3+AStfYnLbg==;EndpointSuffix=core.windows.net"
-      - AZURE_STORAGE_CONTAINER_NAME = "pictures"
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/sampler?schema=public
+      - JWT_SECRET=your_jwt_secret_here
+      - AZURE_STORAGE_CONNECTION_STRING=your_azure_storage_connection_string_here
+      - AZURE_STORAGE_CONTAINER_NAME=your_azure_storage_container_name_here
     depends_on:
       postgres:
         condition: service_healthy
