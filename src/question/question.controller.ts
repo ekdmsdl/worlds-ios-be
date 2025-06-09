@@ -79,7 +79,22 @@ export class QuestionController {
     const question = await this.questionService.getQuestionById(Number(id));
     return new QuestionEntity(question || {});
   }
+
+  // 내가 쓴 게시물 조회
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get('/my/questions')
+  @ApiOperation({ summary: '내가 작성한 질문 목록(멘티)' })
+  async getMyQuestions(@Request() req) {
+    if (req.user.role !== '멘티') {
+      throw new BadRequestException('멘티만 자신의 질문을 조회할 수 있습니다.');
+    }
+    const questions = await this.questionService.getMyQuestions(req.user.id);
+    return questions.map((question) => new QuestionEntity(question));
+  }
 }
+
+
 
 // 게시글 수정
 //   @UseGuards(JwtAuthGuard)

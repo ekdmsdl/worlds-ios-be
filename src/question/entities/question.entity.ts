@@ -10,7 +10,7 @@ export class QuestionEntity {
   userId?: number;
   user: UserEntity;
   answers?: AnswerEntity[];
-  attachments?: AttachmentEntity[];
+  attachment?: AttachmentEntity[];
 
   constructor(partial: Partial<QuestionEntity>) {
     Object.assign(this, partial);
@@ -20,8 +20,8 @@ export class QuestionEntity {
     if (partial.answers) {
       this.answers = partial.answers.map((answer) => new AnswerEntity(answer));
     }
-    if (partial.attachments) {
-      this.attachments = partial.attachments.map(
+    if (partial.attachment) {
+      this.attachment = partial.attachment.map(
         (attachment) => new AttachmentEntity(attachment),
       );
     }

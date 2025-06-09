@@ -59,4 +59,18 @@ export class AnswerController {
   async getMentorRankings() {
     return this.answerService.getMentorRankings();
   }
+
+  // 자기 답변 조회
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @Get('/my/answers')
+  @ApiOperation({ summary: '내가 작성한 답변 목록(멘토)' })
+  async getMyAnswers(@Request() req) {
+    if( req.user.role !== '멘토') {
+      throw new BadRequestException('멘토만 자신의 답변을 조회할 수 있습니다.');
+    }
+    return this.answerService.getMyAnswers(req.user.id);
+  }
+
+
 }

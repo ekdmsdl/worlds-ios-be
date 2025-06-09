@@ -15,6 +15,9 @@ export class AnswerService {
         userId,
         questionId,
       },
+      include: {
+        user: true, // 답변 작성자 정보 포함 <-- 추가부분!!!!
+      },
     });
   }
 
@@ -44,6 +47,18 @@ export class AnswerService {
         count: mentor.answer.length,
       }))
       .sort((a, b) => b.count - a.count);
+  }
+
+  // 자기 답변 조회
+  async getMyAnswers(userId: number) {
+    return this.prisma.answer.findMany({
+      where: { userId },
+      include: { 
+        question: true,
+        user: true, // 답변 작성자 정보 포함
+       },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
   //   // 답변 수정

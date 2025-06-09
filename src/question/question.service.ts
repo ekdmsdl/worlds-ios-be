@@ -22,6 +22,7 @@ export class QuestionService {
     });
 
     if (files && files.length > 0) {
+      console.log('업로드된 파일:', files); 
       const attachmentPromise = files.map(async (file) => {
         return this.prisma.attachment.create({
           data: {
@@ -47,7 +48,7 @@ export class QuestionService {
   // 전체 게시글 조회
   async getQuestion() {
     return this.prisma.question.findMany({
-      include: { user: true, answers: true },
+      include: { user: true, attachment: true },
       orderBy: { id: 'desc' },
     });
   }
@@ -56,10 +57,23 @@ export class QuestionService {
   async getQuestionById(id: number) {
     return this.prisma.question.findUnique({
       where: { id },
-      include: { user: true, answers: true },
+      include: { user: true, answers: true, attachment: true, },
+    });
+  }
+
+  // 내가 쓴 게시물 조회
+  async getMyQuestions(userId: number) {
+    return this.prisma.question.findMany({
+      where: { userId },
+      include: { user: true, attachment: true },
+      orderBy: { createdAt: 'desc' },
     });
   }
 }
+
+
+  
+  
 
   // 게시글 수정
 //   async updateQuestion(id: number, userId: number, dto: UpdateQuestionDto) {
